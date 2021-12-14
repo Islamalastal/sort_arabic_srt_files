@@ -2,11 +2,18 @@
 script to sort content of arabic srt &amp; text files by time stamp.
 
 ## Usage:
-### by running sort.exe
+### Windows
+**by running sort.exe**
 1. download sort.exe and move it to the folder where the other files should be sorted
 2. run sort.exe
 3. Congrats, your files have now been sorted in new copy with the same name followed with "_sorted" ☻ :) 
 
+### windows and linux:
+by using python:
+1. [install python](https://www.python.org/downloads/)
+2. download sort.py and move it to the folder where the other files should be sorted
+3. run sort.py (double click or in Terminal/ CMD: `python sort.py`)
+4. Congrats, your files have now been sorted in new copy with the same name followed with "_sorted" ☻ :) 
 
 
 ### How to download
