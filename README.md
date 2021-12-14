@@ -8,3 +8,8 @@ script to sort content of arabic srt &amp; text files by time stamp.
 3. Congrats, your files have now been sorted in new copy with the same name followed with "_sorted" ☻ :) 
 
 
+
+### How to download
+![how_to_download1](https://user-images.githubusercontent.com/31741809/146095668-b78f7cc4-a6b2-4f0b-8fce-83ad0612124a.png)
+![how_to_download2](https://user-images.githubusercontent.com/31741809/146095670-671d288f-b732-4c50-95cd-32673a6d1ee4.png)
+![how_to_download3](https://user-images.githubusercontent.com/31741809/146095666-c17e99b5-2348-4f59-a229-ca9bd5360526.png)
