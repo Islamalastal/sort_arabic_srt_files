@@ -2,6 +2,7 @@
 script to sort content of arabic srt & text files by time stamp.
 @author: Islam Alastal
 @date: 13.12.2021
+python-version: 3.8
 """
 
 from pathlib import Path
