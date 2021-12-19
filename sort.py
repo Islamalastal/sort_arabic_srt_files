@@ -2,27 +2,18 @@
 script to sort content of arabic srt & text files by time stamp.
 @author: Islam Alastal
 @date: 13.12.2021
-python-version: 3.8
 """
 
 from pathlib import Path
 import glob
 import re
-import os
-
-# set working directory
-FILE_PATH = Path(__file__).parent.resolve()
-os.chdir(FILE_PATH)
 
 
 def get_files():
     """function to get all txt and srt files at current directory"""
-    # allowed file types
-    fileTypes = ("*.txt", "*.srt")
-    # files list
     files = []
-    for file in fileTypes:
-        files.extend(glob.glob(file))
+    for file in glob.glob("*.srt"):
+        files.append(file)
     return files
 
 
@@ -35,40 +26,48 @@ def sort(files):
         # open orginal file 
         with open(file, 'r+', encoding="utf-8") as outfile:
             # open new file for the new changes
-            with open("0_" + file + "_edited.txt", "w+", encoding="utf-8") as edited_file:
+            name, srt = file.split(".")
+            new_file_name = name + "s." + srt
+            with open(new_file_name, "w+", encoding="utf-8") as edited_file:
                 # some needed variables 
-                lines_counter = 0
-                next_line = 0
+                paragraph_number = 0
                 blocks = {}
-                perv_line = ""
+                is_last_line_time_stamp = False 
+                last_time_stamp = None
                 # checking all lines in current file
                 for line in outfile:
-                    lines_counter +=1
+                    # if line is not empty
+                    if line:
+                        # reqular expression to get lines with time stamp
+                        time_stamp_pattern = r"\d\d:\d\d:\d\d,\d\d\d --> \d\d:\d\d:\d\d,\d\d\d"
+                        matched_time_stamp = re.match(time_stamp_pattern, line)
+                        # if line is a time stamp linne
+                        if matched_time_stamp:
+                            last_time_stamp = matched_time_stamp.string
+                            # added paragraph number to new file
+                            paragraph_number += 1
+                            # creat a list for each paragtaph
+                            blocks[last_time_stamp] = []
+                            # blocks[last_time_stamp].append(line)
+                            is_last_line_time_stamp = True
 
-                    # add current line if last line has been matched
-                    # means: add text line, if last line was a time stamp line
-                    if next_line == lines_counter:
-                        blocks[perv_line] = line
-                    
-                    # reqular expression to get lines with time stamp
-                    pattern = r"\d\d:\d\d:\d\d,\d\d\d --> \d\d:\d\d:\d\d,\d\d\d"
+                        elif last_time_stamp != None and is_last_line_time_stamp == True and line != "\n" and line[0].isdigit()==False:
+                            blocks[last_time_stamp].append(line)
 
-                    # if time stamp has been natche -> add it as a key in dictionary blocks 
-                    matched = re.findall(pattern, line)
-                    if matched:
-                        for line in matched:
-                            blocks[line] = ""
-                            # set next line counter  -> 
-                            # to use it to save next line after matching this line successfully
-                            next_line = lines_counter+1
-                    perv_line = line
-                
-                # sort dictionary by keys (time stamps)
-                # and add time stamps & lines to a new file
+                        else:
+                            is_last_line_time_stamp = False 
+
+                # sort lines by paragraph number
                 dictionary_items = blocks.items()
+                sorted_pargraphs_number = 0
                 for key, value in sorted(dictionary_items):
-                    edited_file.write(key+"\n")
-                    edited_file.write(value+"\n")
+                    sorted_pargraphs_number += 1
+                    edited_file.write(str(sorted_pargraphs_number) + "\n")
+                    edited_file.write(str(key))
+                    for line in value:
+                        # write text line in the new file 
+                        edited_file.write(str(line))
+                    edited_file.write("\n")
 
 
 if __name__ == "__main__":
